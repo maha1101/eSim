@@ -63,7 +63,14 @@ function installNghdl
 {
 
     echo "Installing NGHDL..........................."
-    unzip -o nghdl.zip
+    if [ -f nghdl.zip ]; then
+        unzip -o nghdl.zip
+    elif [ -d nghdl ]; then
+        echo "nghdl.zip not found, using existing nghdl/ directory"
+    else
+        echo "nghdl.zip not found (not part of the v2.5 source tree), cloning NGHDL from upstream..."
+        git clone --depth 1 https://github.com/FOSSEE/nghdl.git nghdl || { echo "ERROR: could not obtain NGHDL."; exit 1; }
+    fi
     cd nghdl/
     chmod +x install-nghdl.sh
 
