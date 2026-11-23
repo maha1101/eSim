@@ -133,7 +133,7 @@ function installKicad
                 fi
             else
                 echo "KiCad 8.0 is already installed."
-                exit 0
+                return 0
             fi
         fi
 
@@ -144,14 +144,15 @@ function installKicad
     # Check if the PPA is already added
     if ! grep -q "^deb .*${kicadppa}" /etc/apt/sources.list /etc/apt/sources.list.d/* 2>/dev/null; then
         echo "Adding KiCad PPA to local apt repository: $kicadppa"
-        sudo add-apt-repository -y "ppa:$kicadppa"
+        # Skipped on 25.04: PPA kicad 8.0.9 depends on libgit2-1.8 (25.04 has 1.9). Using Ubuntu archive 8.0.8.
+        # sudo add-apt-repository -y "ppa:$kicadppa"
         sudo apt-get update
     else
         echo "KiCad PPA is already present in sources."
     fi
 
     # Install KiCad packages
-    sudo apt-get install -y -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 --fix-missing --no-install-recommends kicad=8.0.8+dfsg-1 kicad-footprints kicad-libraries kicad-symbols kicad-templates
+    sudo apt-get install -y -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 --fix-missing --no-install-recommends kicad=8.0.8+dfsg-1 kicad-footprints=8.0.8-1 kicad-libraries=8.0.8+dfsg-1 kicad-symbols=8.0.8-1 kicad-templates=8.0.8-1
 
     echo "KiCad installation completed successfully!"
 }
