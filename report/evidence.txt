@@ -1,0 +1,35 @@
+== lsb_release ==
+Distributor ID:	Ubuntu
+Description:	Ubuntu 25.04
+Release:	25.04
+Codename:	plucky
+== python ==
+Python 3.13.3
+== kicad packages ==
+ii kicad 8.0.8+dfsg-1
+ii kicad-footprints 8.0.8-1
+ii kicad-libraries 8.0.8+dfsg-1
+ii kicad-symbols 8.0.8-1
+ii kicad-templates 8.0.8-1
+== apt-cache policy kicad ==
+kicad:
+  Installed: 8.0.8+dfsg-1
+  Candidate: 8.0.9-0~ubuntu25.04.1
+  Version table:
+     8.0.9-0~ubuntu25.04.1 500
+        500 https://ppa.launchpadcontent.net/kicad/kicad-8.0-releases/ubuntu plucky/main amd64 Packages
+ *** 8.0.8+dfsg-1 500
+        500 http://in.archive.ubuntu.com/ubuntu plucky/universe amd64 Packages
+        100 /var/lib/dpkg/status
+== kicad config ==
+8.0
+== key lines from logs ==
+report/esim-install2.log:179:Ubuntu 25.04 detected.
+report/esim-install2.log:180:KiCad 8.0 is already installed.
+report/esim-install2.log:181:kicadLibrary.tar.xz not found, using extracted library/kicadLibrary
+report/esim-install2.log:182:Using KiCad config folder: /home/maha/.config/kicad/8.0
+report/esim-install2.log:185:unzip:  cannot find or open nghdl.zip, nghdl.zip.zip or nghdl.zip.ZIP.
+report/esim-install.log:179:Ubuntu 25.04 detected.
+report/esim-install.log:180:KiCad 8.0 is already installed.
+report/esim-install.log:181:tar (child): library/kicadLibrary.tar.xz: Cannot open: No such file or directory
+report/esim-install.log:182:tar (child): Error is not recoverable: exiting now

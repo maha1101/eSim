@@ -1,0 +1,6 @@
+8.0.8
+ii  kicad                                         8.0.8+dfsg-1                               amd64        Electronic schematic and PCB design software
+ii  kicad-footprints                              8.0.8-1                                    all          Footprint symbols for KiCad's Pcbnew
+ii  kicad-libraries                               8.0.8+dfsg-1                               all          Virtual package providing common used libraries by kicad
+ii  kicad-symbols                                 8.0.8-1                                    all          Schematic symbols for KiCad's Eeschema
+ii  kicad-templates                               8.0.8-1                                    all          Project templates for KiCad
