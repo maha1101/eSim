@@ -151,7 +151,7 @@ function installKicad
     fi
 
     # Install KiCad packages
-    sudo apt-get install -y --no-install-recommends kicad=8.0.8+dfsg-1 kicad-footprints kicad-libraries kicad-symbols kicad-templates
+    sudo apt-get install -y -o Acquire::Retries=5 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 --fix-missing --no-install-recommends kicad=8.0.8+dfsg-1 kicad-footprints kicad-libraries kicad-symbols kicad-templates
 
     echo "KiCad installation completed successfully!"
 }
