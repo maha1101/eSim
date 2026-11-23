@@ -228,36 +228,44 @@ function installDependency
 
 function copyKicadLibrary
 {
+    local kicad_src="" tmpdir=""
 
-    #Extract custom KiCad Library
-    tar -xJf library/kicadLibrary.tar.xz
-
-    if [ -d ~/.config/kicad/6.0 ];then
-        echo "kicad config folder already exists"
-    else 
-        echo ".config/kicad/6.0 does not exist"
-        mkdir -p ~/.config/kicad/6.0
+    # Use the archive if present, else the already extracted folder
+    if [ -f library/kicadLibrary.tar.xz ]; then
+        tmpdir=$(mktemp -d)
+        tar -xJf library/kicadLibrary.tar.xz -C "$tmpdir"
+        kicad_src="$tmpdir/kicadLibrary"
+    elif [ -d library/kicadLibrary ]; then
+        echo "kicadLibrary.tar.xz not found, using extracted library/kicadLibrary"
+        kicad_src="library/kicadLibrary"
+    else
+        echo "ERROR: eSim KiCad library not found (library/kicadLibrary.tar.xz or library/kicadLibrary)."
+        echo "Run this script from the eSim source root."
+        exit 1
     fi
 
-    # Copy symbol table for eSim custom symbols 
-    cp kicadLibrary/template/sym-lib-table ~/.config/kicad/6.0/
+    # KiCad config folder follows the installed KiCad version (default 8.0)
+    local kicad_ver
+    kicad_ver=$(dpkg-query -W -f='${Version}' kicad 2>/dev/null | sed 's/^[0-9]*://' | grep -oE '^[0-9]+\.[0-9]+')
+    kicad_ver=${kicad_ver:-8.0}
+    local kicad_conf="$HOME/.config/kicad/$kicad_ver"
+
+    mkdir -p "$kicad_conf"
+    echo "Using KiCad config folder: $kicad_conf"
+
+    # Copy symbol table for eSim custom symbols
+    cp "$kicad_src/template/sym-lib-table" "$kicad_conf/"
     echo "symbol table copied in the directory"
 
     # Copy KiCad symbols made for eSim
-    sudo cp -r kicadLibrary/eSim-symbols/* /usr/share/kicad/symbols/
+    sudo mkdir -p /usr/share/kicad/symbols
+    sudo cp -r "$kicad_src"/eSim-symbols/* /usr/share/kicad/symbols/
 
-    set +e      # Temporary disable exit on error
-    trap "" ERR # Do not trap on error of any command
-    
-    # Remove extracted KiCad Library - not needed anymore
-    rm -rf kicadLibrary
+    # Remove only the temporary extraction
+    [ -n "$tmpdir" ] && rm -rf "$tmpdir"
 
-    set -e      # Re-enable exit on error
-    trap error_exit ERR
-
-    #Change ownership from Root to the User
+    # Change ownership from Root to the User
     sudo chown -R $USER:$USER /usr/share/kicad/symbols/
-
 }
 
 
